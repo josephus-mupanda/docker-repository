@@ -1,8 +1,15 @@
-# Use an official Tomcat runtime as a base image
-FROM tomcat:latest
+# Use the official Tomcat image from Docker Hub
+FROM tomcat:10.1
 
-# Remove the default ROOT application
-RUN rm -rf /usr/local/tomcat/webapps/ROOT
+# Remove the default webapps to ensure only your app is deployed
+RUN rm -rf /usr/local/tomcat/webapps/*
 
-# Copy your web application directory into the Tomcat webapps directory
-COPY src/main/webapp /usr/local/tomcat/webapps/ROOT
+# Copy the WAR file into the webapps directory
+COPY assignment.war /usr/local/tomcat/webapps/ROOT.war
+
+# Expose the Tomcat default port
+EXPOSE 8080
+
+# Start Tomcat
+CMD ["catalina.sh", "run"]
+
